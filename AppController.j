@@ -7,7 +7,7 @@
  */
 
 @import <Foundation/CPObject.j>
-
+@import "StickyNote.j"
 
 @implementation AppController : CPObject
 {
@@ -18,12 +18,7 @@
     var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask],
         contentView = [theWindow contentView];
 
-    var label = [[CPTextField alloc] initWithFrame:CGRectMakeZero()];
-
-    [label setStringValue:@"Hello World!"];
-    [label setFont:[CPFont boldSystemFontOfSize:24.0]];
-
-    [label sizeToFit];
+    var label = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
 
     [label setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
     [label setCenter:[contentView center]];
