@@ -1,4 +1,5 @@
 
+StickyNoteDragType = @"StickyNoteDragType"
 
 @implementation StickyNote : CPBox
 {
@@ -31,4 +32,27 @@
     }
     return self;
 }
+
+- (void)mouseDragged:(CPEvent)anEvent
+{   
+    var point = [self convertPoint:[anEvent locationInWindow] fromView:nil],
+            bounds = CGRectMake(0, 0, 30, 30);
+            
+    [[CPPasteboard pasteboardWithName:CPDragPboard] declareTypes:[CPArray arrayWithObject:[StickyNoteDragType]] owner:self];    
+    
+    [self dragView: [self mutableCopy]
+                at: CPPointMakeZero()
+            offset: CPPointMake(0.0, 0.0)
+             event: anEvent
+        pasteboard: nil
+            source: self
+         slideBack: YES];
+    }
+}
+
+- (id)mutableCopy
+{   
+    return [[StickyNote alloc] initWithFrame:[self frame]];
+}
+
 @end
