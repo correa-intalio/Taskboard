@@ -120,13 +120,29 @@
         [titleTextField setCenter:[titleView center]];
         [titleView addSubview:titleTextField];
 
+		[self registerForDraggedTypes:[CPArray arrayWithObject:[StickyNoteDragType]]];
         //TODO Melisa: agregar logicamente segun tamaños
         
-        var stickyBounds = width/3;
-            stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0, 100, stickyBounds, stickyBounds)];
-        [self addSubview:stickyNote];
+        var stickyBounds = width/3,
+            stickyNote1 = [[StickyNote alloc] initWithFrame:CGRectMake(0, CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)],
+            stickyNote2 = [[StickyNote alloc] initWithFrame:CGRectMake(CGRectGetWidth([stickyNote1 bounds]), CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)],
+            stickyNote3 = [[StickyNote alloc] initWithFrame:CGRectMake(CGRectGetWidth([stickyNote1 bounds]) * 2, CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)];
+        [self addSubview:stickyNote1];
+        [self addSubview:stickyNote2];
+        [self addSubview:stickyNote3];
     }
     return self;
+}
+- (void)performDragOperation:(CPDraggingInfo)aSender
+{
+	CPLog.trace("performDragOperatio");
+    /*var taskView = [CPKeyedUnarchiver unarchiveObjectWithData:[[aSender draggingPasteboard] dataForType:StickyNoteDragType]],
+        location = [self convertPoint:[aSender draggingLocation] fromView:nil];
+    
+    [taskView setFrameOrigin:CGPointMake(location.x - CGRectGetWidth([furnitureView frame]) / 2.0, location.y - CGRectGetHeight([furnitureView frame]) / 2.0)];
+    
+    [self addFurnitureView:taskView];
+*/
 }
 @end
 

@@ -19,7 +19,7 @@
     var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask],
         contentView = [theWindow contentView];
 
-    var taskboard = [[Taskboard alloc] initWithFrame:CGRectMake(0, 0, 800, 600)];
+    var taskboard = [[Taskboard alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
     [taskboard setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
     [taskboard setCenter:[contentView center]];
     [contentView addSubview:taskboard];

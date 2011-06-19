@@ -3,6 +3,7 @@ StickyNoteDragType = @"StickyNoteDragType"
 
 @implementation StickyNote : CPBox
 {
+	CGPoint     dragLocation;
 }
 
 - (id)initWithFrame:(CGRect)aFrame
@@ -28,30 +29,47 @@ StickyNoteDragType = @"StickyNoteDragType"
         [self addSubview:imageView];
         
         [self setBackgroundColor:[CPColor lightGrayColor]];
+		
     }
     return self;
 }
 
+- (void)mouseDown:(CPEvent)anEvent
+{
+    editedOrigin = [self frame].origin;
+    
+    dragLocation = [anEvent locationInWindow];
+    
+}
+
 - (void)mouseDragged:(CPEvent)anEvent
 {   
-    var point = [self convertPoint:[anEvent locationInWindow] fromView:nil],
+    var location = [anEvent locationInWindow],
+        origin = [self frame].origin;
+    
+    [self setFrameOrigin:CGPointMake(origin.x + location.x - dragLocation.x, origin.y + location.y - dragLocation.y)];
+
+    dragLocation = location;
+	/*var point = [self convertPoint:[anEvent locationInWindow] fromView:nil],
             bounds = CGRectMake(0, 0, 30, 30);
             
     [[CPPasteboard pasteboardWithName:CPDragPboard] declareTypes:[CPArray arrayWithObject:[StickyNoteDragType]] owner:self];    
     
-    [self dragView: [self mutableCopy]
+    [self dragView: self
                 at: CPPointMakeZero()
             offset: CPPointMake(0.0, 0.0)
              event: anEvent
         pasteboard: nil
             source: self
          slideBack: YES];
-    }
+    }*/
 }
 
 - (id)mutableCopy
 {   
     return [[StickyNote alloc] initWithFrame:[self frame]];
 }
+
+
 
 @end
