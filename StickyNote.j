@@ -15,6 +15,7 @@ StickyNoteDragType = @"StickyNoteDragType"
             height = [[self bounds].size.height];
             
         var mainBundle = [CPBundle mainBundle];
+//        var frame = CGRectInset([self bounds], 5.0, 5.0);
 
         var path = [mainBundle pathForResource:@"stickynote.jpg"],
             image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(80, 60)],
@@ -28,8 +29,28 @@ StickyNoteDragType = @"StickyNoteDragType"
         [self addSubview:imageView];
         
         [self setBackgroundColor:[CPColor lightGrayColor]];
+        [self registerForDraggedTypes:[CPArray arrayWithObjects:StatusTaskDragType]];
     }
     return self;
+}
+
+- (void)performDragOperation:(CPDraggingInfo)aSender
+{
+    [self setBorderType:CPNoBorder];
+    [self setBorderColor:[CPColor whiteColor]];
+}
+
+- (void)draggingEntered:(CPDraggingInfo)aSender
+{
+    console.log("asasas");
+    [self setBorderType:CPGrooveBorder];
+    [self setBorderColor:[CPColor blackColor]];
+}
+
+- (void)draggingExited:(CPDraggingInfo)aSender
+{
+    [self setBorderType:CPNoBorder];
+    [self setBorderColor:[CPColor whiteColor]];
 }
 
 - (void)mouseDragged:(CPEvent)anEvent
@@ -37,8 +58,8 @@ StickyNoteDragType = @"StickyNoteDragType"
     var point = [self convertPoint:[anEvent locationInWindow] fromView:nil],
             bounds = CGRectMake(0, 0, 30, 30);
             
-    [[CPPasteboard pasteboardWithName:CPDragPboard] declareTypes:[CPArray arrayWithObject:[StickyNoteDragType]] owner:self];    
-    
+    [[CPPasteboard pasteboardWithName:CPDragPboard] declareTypes:[CPArray arrayWithObject:[StickyNoteDragType]] owner:self];
+
     [self dragView: [self mutableCopy]
                 at: CPPointMakeZero()
             offset: CPPointMake(0.0, 0.0)
