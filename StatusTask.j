@@ -1,5 +1,5 @@
 
-StatusTaskDragType = @"StatusTaskDragType"
+StatusTaskDragType = "StatusTaskDragType"
 
 @implementation StatusTask : CPBox
 {
@@ -27,7 +27,7 @@ StatusTaskDragType = @"StatusTaskDragType"
 
         [self setBorderType:CPGrooveBorder];
         [self setBorderColor:[CPColor blackColor]];
-        [self setCornerRadius:3];
+        // [self setCornerRadius:3];
         var textFiel = [[CPTextField alloc] initWithFrame:CGRectMake(0,0,300,0)];
         [textFiel setStringValue:status];
         [textFiel setEditable:NO];
@@ -45,7 +45,7 @@ StatusTaskDragType = @"StatusTaskDragType"
             bounds = CGRectMake(0, 0, 30, 30);
             
     [[CPPasteboard pasteboardWithName:CPDragPboard] declareTypes:[CPArray arrayWithObject:[StatusTaskDragType]] owner:self];    
-    
+
     [self dragView: [self mutableCopy]
                 at: CPPointMakeZero()
             offset: CPPointMake(0.0, 0.0)
@@ -54,6 +54,12 @@ StatusTaskDragType = @"StatusTaskDragType"
             source: self
          slideBack: YES];
     }
+}
+- (void)pasteboard:(CPPasteboard)aPasteboard provideDataForType:(CPString)aType
+{
+    console.log(aType);
+    if(aType == StatusTaskDragType)
+        [aPasteboard setData:[self mutableCopy] forType:aType];
 }
 
 - (void)setColor1:(CPColor)aColor
@@ -92,7 +98,8 @@ StatusTaskDragType = @"StatusTaskDragType"
 
 - (id)mutableCopy
 {   
-    return [[StatusTask alloc] initWithFrame:[self frame] status:[self status] color:[self color]];
+    return [CPShadowView shadowViewEnclosingView:[[StatusTask alloc] initWithFrame:[self frame] status:[self status] color:[self color]] 
+                         withWeight:CPHeavyShadow];
 }
 
 + (StatusTask)(id)withFrame:(CGRect)aFrame status:(CPString)aStatus color:(CPColor)aColor

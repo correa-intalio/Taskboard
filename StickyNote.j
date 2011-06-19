@@ -16,6 +16,7 @@ StickyNoteDragType = @"StickyNoteDragType"
             height = [[self bounds].size.height];
             
         var mainBundle = [CPBundle mainBundle];
+//        var frame = CGRectInset([self bounds], 5.0, 5.0);
 
         var path = [mainBundle pathForResource:@"stickynote.jpg"],
             image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(80, 60)],
@@ -27,9 +28,7 @@ StickyNoteDragType = @"StickyNoteDragType"
         [imageView setFrameSize:imageSize];
         [imageView setImage:image];
         [self addSubview:imageView];
-        
         [self setBackgroundColor:[CPColor lightGrayColor]];
-		
     }
     return self;
 }
@@ -39,7 +38,25 @@ StickyNoteDragType = @"StickyNoteDragType"
     editedOrigin = [self frame].origin;
     
     dragLocation = [anEvent locationInWindow];
+}
     
+- (void)performDragOperation:(CPDraggingInfo)aSender
+{
+    [self setBorderType:CPNoBorder];
+    [self setBorderColor:[CPColor whiteColor]];
+}
+
+- (void)draggingEntered:(CPDraggingInfo)aSender
+{
+    console.log("asasas");
+    [self setBorderType:CPGrooveBorder];
+    [self setBorderColor:[CPColor blackColor]];
+}
+
+- (void)draggingExited:(CPDraggingInfo)aSender
+{
+    [self setBorderType:CPNoBorder];
+    [self setBorderColor:[CPColor whiteColor]];
 }
 
 - (void)mouseDragged:(CPEvent)anEvent
