@@ -1,6 +1,11 @@
 @import <AppKit/CPBox.j>
+@import "Task.j"
+@import "User.j"
+
+
 @implementation Taskboard : CPBox
 {
+    CPMutableArray userList @accessors;
 }
 
 
@@ -16,7 +21,17 @@
             
         [self setBackgroundColor:[CPColor lightGrayColor]];
         
+        userList = [self createMockUserList];
+        // var label = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+        
+            
     }
     return self;
 }
+
+- (CPMutableArray)createMockUserList
+{
+    return [CPMutableArray arrayWithArray:[[User userWithName:"Diego" taskList:[CPMutableArray arrayWithArray:[]]]]];
+}
+
 @end

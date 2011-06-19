@@ -8,6 +8,7 @@
 
 @import <Foundation/CPObject.j>
 @import "StickyNote.j"
+@import "Taskboard.j"
 
 @implementation AppController : CPObject
 {
@@ -18,12 +19,10 @@
     var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask],
         contentView = [theWindow contentView];
 
-    var label = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-
-    [label setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
-    [label setCenter:[contentView center]];
-
-    [contentView addSubview:label];
+    var taskboard = [[Taskboard alloc] initWithFrame:CGRectMake(0, 0, 800, 600)];
+    [taskboard setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
+    [taskboard setCenter:[contentView center]];
+    [contentView addSubview:taskboard];
 
     [theWindow orderFront:self];
 
