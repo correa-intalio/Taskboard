@@ -92,7 +92,8 @@ StatusTaskDragType = @"StatusTaskDragType"
 
 - (id)mutableCopy
 {   
-    return [[StatusTask alloc] initWithFrame:[self frame] status:[self status] color:[self color]];
+    return [CPShadowView shadowViewEnclosingView:[[StatusTask alloc] initWithFrame:[self frame] status:[self status] color:[self color]] 
+                         withWeight:CPLightShadow];
 }
 
 + (StatusTask)(id)withFrame:(CGRect)aFrame status:(CPString)aStatus color:(CPColor)aColor
