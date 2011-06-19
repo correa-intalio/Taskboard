@@ -88,9 +88,24 @@
     {
         title = aTitle;
         [self setBackgroundColor:[CPColor whiteColor]];
+        var width = CGRectGetWidth([self bounds]),
+            height = CGRectGetHeight([self bounds]),
+            mainBundle = [CPBundle mainBundle];
+
+        var path = [mainBundle pathForResource:@"title.png"],
+            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(200, 50)],
+            imageView = [[CPImageView alloc] initWithFrame:CGRectMake(10, 10, width, height)];
+
+        [imageView setHasShadow:NO];
+        [imageView setImageScaling:CPScaleNone];
+        var imageSize = [image size];
+        [imageView setFrameSize:imageSize];
+        [imageView setImage:image];
+        [self addSubview:imageView];
+        
         var titleView = [[CPBox alloc] initWithFrame:CGRectMake(0,0,CGRectGetWidth([self bounds]),100)];
         [titleView setBorderType:CPLineBorder];
-        [titleView setBorderColor:[CPColor redColor]];
+        [titleView setBorderColor:[CPColor lightGrayColor]];
         [self addSubview:titleView];
 
         var titleTextField = [[CPTextField alloc] initWithFrame:CGRectMake(0,0,100,40)];
@@ -101,8 +116,13 @@
 
         [titleTextField setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
         [titleTextField setCenter:[titleView center]];
-
         [titleView addSubview:titleTextField];
+
+        //TODO Melisa: agregar logicamente segun tamaños
+        
+        var stickyBounds = width/3;
+            stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0, 100, stickyBounds, stickyBounds)];
+        [self addSubview:stickyNote];
     }
     return self;
 }

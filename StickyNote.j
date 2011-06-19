@@ -7,7 +7,6 @@ StickyNoteDragType = @"StickyNoteDragType"
 
 - (id)initWithFrame:(CGRect)aFrame
 {
-    CPLog.trace("Creating a new " + [self class] + " CGRect(" + aFrame.origin.x + "," + aFrame.origin.y + "," + aFrame.size.width + "," + aFrame.size.height + ")");
     self = [super initWithFrame:aFrame];
 
     if (self)
@@ -18,16 +17,16 @@ StickyNoteDragType = @"StickyNoteDragType"
         var mainBundle = [CPBundle mainBundle];
 
         var path = [mainBundle pathForResource:@"stickynote.jpg"],
-            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(200, 200)],
-            imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(80, 60)],
+            imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
 
         [imageView setHasShadow:NO];
-        [imageView setImageScaling:CPScaleNone];
+        [imageView setImageScaling:CPScaleToFit];
         var imageSize = [image size];
         [imageView setFrameSize:imageSize];
         [imageView setImage:image];
         [self addSubview:imageView];
-
+        
         [self setBackgroundColor:[CPColor lightGrayColor]];
     }
     return self;
