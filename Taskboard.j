@@ -171,7 +171,7 @@
 }
 @end
 
-@implementation StatusTaskPanel : CPView
+@implementation StatusTaskPanel : CPBox
 {
 }
 - (id)initWithFrame:(CGRect)aFrame
@@ -180,7 +180,14 @@
     if (self)
     {
         [self setBackgroundColor:[CPColor yellowColor]];
-        [self addSubview:[StatusTask withFrame:CGRectMake(0, 0, 100, 50) status:"PLEASE \n TEST" color:[CPColor blueColor]]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(2, 2, 96, 46) status:"PLEASE \n TEST" color:[CPColor blueColor]] 
+                                       withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(100, 2, 96, 46) status:"PLEASE \n ANALYSE" color:[CPColor redColor]]
+                                       withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(2, 50, 96, 46) status:"DONE" color:[CPColor yellowColor]]
+                                       withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(100, 50, 96, 46) status:"BLOCKED" color:[CPColor lightGrayColor]]
+                                       withWeight:CPLightShadow]];
     }
     return self;
 }
