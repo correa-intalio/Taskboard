@@ -25,9 +25,9 @@
     [taskboard setCenter:[contentView center]];
     [contentView addSubview:taskboard];
 
-    [WindowUtils showInHUDPanel:[[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 200, 200)] withFrame:CGRectMake(100, 100, 400, 400)];
     [theWindow orderFront:self];
 
+    // [WindowUtils showInHUDPanel:[[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 200, 200)] withFrame:CGRectMake(100, 100, 400, 400)];
     // Uncomment the following line to turn on the standard menu bar.
     //[CPMenu setMenuBarVisible:YES];
 }
