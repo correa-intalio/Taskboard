@@ -1,6 +1,7 @@
 @import <AppKit/CPBox.j>
 @import "Task.j"
 @import "User.j"
+@import "StatusTask.j"
 
 
 @implementation Taskboard : CPBox
@@ -58,6 +59,7 @@
     self = [super initWithFrame:aFrame];
     if (self)
     {
+        [self addSubview:[[[StatusTaskPanel alloc] init] initWithFrame:CGRectMake(100, 0, 400, 100)]];
     }
     return self;
 }
@@ -164,6 +166,21 @@
     {
         [self setBackgroundColor:[CPColor blueColor]];
         
+    }
+    return self;
+}
+@end
+
+@implementation StatusTaskPanel : CPView
+{
+}
+- (id)initWithFrame:(CGRect)aFrame
+{
+    self = [super initWithFrame:aFrame];
+    if (self)
+    {
+        [self setBackgroundColor:[CPColor yellowColor]];
+        [self addSubview:[StatusTask withFrame:CGRectMake(0, 0, 100, 50) status:"PLEASE \n TEST" color:[CPColor blueColor]]];
     }
     return self;
 }
