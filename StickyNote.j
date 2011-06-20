@@ -53,6 +53,33 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
     [self setFrameOrigin:CGPointMake(origin.x + location.x - dragLocation.x, origin.y + location.y - dragLocation.y)];
 
     dragLocation = location;
+
+	var myLocation = [[self superview] convertPoint:[anEvent locationInWindow] fromView:nil],
+	index = [self _rowAtPoint:myLocation];
+	
+	if( index == 0)
+	{
+		[self setBackgroundColor:BlueColor];
+	}
+	if( index == 1)
+	{
+		[self setBackgroundColor:YellowColor];
+	}
+	if( index == 2)
+	{
+		[self setBackgroundColor:BlueColor];
+	}
+	
+
+}
+
+- (int)_rowAtPoint:(CGPoint)thePoint
+{
+    var width = CGRectGetWidth([[self superview] bounds])/3;
+	console.log('point ', thePoint.x, ' width ', width);
+	var column = FLOOR(thePoint.x / width);
+ 
+    return column;
 }
 
 - (void)drawRect:(CPRect)aRect
