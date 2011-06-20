@@ -210,7 +210,7 @@
                                         CGPointMake(width + width, 0),
                                             CGPointMake(width + width, height)],
                                     4);
-    }
+}
 @end
 
 @implementation TaskboardNavigationArea : CPBox

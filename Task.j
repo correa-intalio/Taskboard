@@ -11,7 +11,7 @@
     }
     return self;
 }
-+ (Task)userWithTitle:(CPString)aTitle
++ (Task)taskWithTitle:(CPString)aTitle
 {
    return [[Task alloc] initWithTitle:aTitle];
 }
