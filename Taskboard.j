@@ -178,7 +178,7 @@
     self = [super initWithFrame:aFrame];
     if (self)
     {
-        // [self setBackgroundColor:[CPColor whiteColor]];
+        // [self setBackgroundColor:[CPColor lightGrayColor]];
         var width = CGRectGetWidth([self bounds]) / 3,
             height = CGRectGetHeight([self bounds]);
         

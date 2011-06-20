@@ -17,20 +17,20 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
     self = [super initWithFrame:aFrame];
     if (self)
     {
-        var width = [[self bounds].size.width],
-            height = [[self bounds].size.height];
+        var width = CGRectGetWidth([self bounds]),
+            height = CGRectGetHeight([self bounds]);
         
         task = [Task taskWithTitle:"Task User"];
         
         [self setBackgroundColor:YellowColor];
         [self setBorderType:CPLineBorder];
         
-        var label = [[CPTextField alloc] initWithFrame:CGRectMake(0,0,300,0)];
+        var label = [[LPMultiLineTextField alloc] initWithFrame:CGRectMake(0,height * 1 / 3,width,height * 2 / 3)];
         [label setStringValue:"[task title]"];
         [label setEditable:YES];
         [label setFont:[CPFont boldSystemFontOfSize:14.0]];
-        [label sizeToFit];
-        [label setCenter:[self center]];
+        //[label sizeToFit];
+        [label setCenter:CGPointMake(width / 2, height / 2)];
         [self addSubview:label];
     }
     return self;
@@ -55,11 +55,6 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
     dragLocation = location;
 }
 
-- (id)mutableCopy
-{   
-    return [[StickyNote alloc] initWithFrame:[self frame]];
-}
-
 - (void)drawRect:(CPRect)aRect
 {
     var bounds = [self bounds],
@@ -68,7 +63,7 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
         height = CGRectGetHeight(bounds);
 
     CGContextSetFillColor(context, [CPColor redColor]);
-    CGContextFillEllipseInRect(context, CGRectMake(width / 2 - 10 ,10,15,15), 40, 40);
+    CGContextFillEllipseInRect(context, CGRectMake(width / 2 - 10 ,10,10,10), 40, 40);
     
     CGContextSetStrokeColor(context, [CPColor lightGrayColor]);
     CGContextStrokeRect(context, CGRectInset([self bounds], 0.5, 0.5));
