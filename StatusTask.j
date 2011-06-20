@@ -44,7 +44,7 @@ StatusTaskDragType = @"StatusTaskDragType"
     var point = [self convertPoint:[anEvent locationInWindow] fromView:nil],
             bounds = CGRectMake(0, 0, 30, 30);
             
-    [[CPPasteboard pasteboardWithName:CPDragPboard] declareTypes:[CPArray arrayWithObject:[StatusTaskDragType]] owner:self];    
+    [[CPPasteboard pasteboardWithName:CPDragPboard] declareTypes:[CPArray arrayWithObject:StatusTaskDragType] owner:self];    
     
     [self dragView: [self mutableCopy]
                 at: CPPointMakeZero()
@@ -55,7 +55,11 @@ StatusTaskDragType = @"StatusTaskDragType"
          slideBack: YES];
     }
 }
+- (void) pasteboard:(CPPasteboard)aPasteboard provideDataForType:(CPString)aType {
 
+    if(aType == StatusTaskDragType) 
+        [aPasteboard setData:self forType:aType]; 
+}
 - (void)setColor1:(CPColor)aColor
 {
     color1 = aColor;
@@ -99,4 +103,5 @@ StatusTaskDragType = @"StatusTaskDragType"
 {
     return [[StatusTask alloc] initWithFrame:aFrame status:aStatus color:aColor];
 }
+
 @end
