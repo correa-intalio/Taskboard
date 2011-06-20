@@ -98,28 +98,31 @@
             mainBundle = [CPBundle mainBundle];
 
         var path = [mainBundle pathForResource:@"title-background.jpg"],
-            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(200, 50)],
-            imageView = [[CPImageView alloc] initWithFrame:CGRectInset([self bounds], 5.0, 5.0)];
+            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(366, 195)],
+            imageView = [[CPImageView alloc] initWithFrame:CGRectInset([self bounds], 3.0, 3.0)];
 
         [imageView setImageScaling:CPScaleProportionally];
         [imageView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
         [imageView setImage:image];
         [self addSubview:imageView];
         
-        var titleView = [[CPBox alloc] initWithFrame:CGRectMake(0,0,CGRectGetWidth([self bounds]),100)];
-        [titleView setBorderType:CPNoBorder];
-        [titleView setBorderColor:[CPColor lightGrayColor]];
-        [self addSubview:titleView];
-
+        // var titleView = [[CPBox alloc] initWithFrame:CGRectMake(0,0,CGRectGetWidth([self bounds]),100)];
+        // [titleView setBorderType:CPNoBorder];
+        // [titleView setBorderColor:[CPColor lightGrayColor]];
+        // [self addSubview:titleView];
+        // 
         var titleTextField = [[CPTextField alloc] initWithFrame:CGRectMake(0,0,100,40)];
         [titleTextField setStringValue:title];
         [titleTextField setEditable:NO];
-        [titleTextField setFont:[CPFont systemFontOfSize:14.0]];
+        [titleTextField setFont:[CPFont boldSystemFontOfSize:14.0]];
         [titleTextField sizeToFit];
-
         [titleTextField setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
         [titleTextField setCenter:CGPointMake(width / 2, height / 2)];
-        [titleView addSubview:titleTextField];
+        [self addSubview:titleTextField];
+        
+        // [titleTextField setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
+        // [titleTextField setCenter:CGPointMake(width / 2, height / 2)];
+        // [titleView addSubview:titleTextField];
 
     }
     return self;
@@ -172,11 +175,11 @@
             height = CGRectGetHeight([self bounds]);
         
         
-        notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,60) title:"NOT STARTED"];
+        notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,80) title:"NOT STARTED"];
         [self addSubview:notStartedColumn];
-        inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,60) title:"IN PROGRESS"];
+        inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,80) title:"IN PROGRESS"];
         [self addSubview:inProgressColumn];
-        finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,60) title:"FINISHED"];
+        finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,80) title:"FINISHED"];
         [self addSubview:finishedColumn];
         [self registerForDraggedTypes:[NewStickyNoteDragType]];
 
