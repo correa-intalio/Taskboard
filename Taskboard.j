@@ -218,7 +218,7 @@
 {
     [self setDraggingExitedBorder];
    var data = [[aSender draggingPasteboard] dataForType:NewStickyNoteDragType];
-   console.log([aSender draggedView], [aSender draggedViewLocation], [aSender draggingDestinationWindow], [aSender draggingLocation], [aSender draggingSource]);
+   // console.log([aSender draggedView], [aSender draggedViewLocation], [aSender draggingDestinationWindow], [aSender draggingLocation], [aSender draggingSource]);
    var stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 100, 100) task:[Task taskWithTitle:"Task User"]];
    [stickyNote setCenter:[aSender draggingLocation]];
    [self addSubview:stickyNote];
@@ -265,14 +265,22 @@
     if (self)
     {
         [self setBackgroundColor:[CPColor yellowColor]];
-        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(2, 2, 96, 46) status:"PLEASE \n TEST" color:[CPColor blueColor]] 
-                                       withWeight:CPLightShadow]];
-        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(100, 2, 96, 46) status:"PLEASE \n ANALYSE" color:[CPColor redColor]]
-                                       withWeight:CPLightShadow]];
-        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(2, 50, 96, 46) status:"DONE" color:[CPColor yellowColor]]
-                                       withWeight:CPLightShadow]];
-        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(100, 50, 96, 46) status:"BLOCKED" color:[CPColor lightGrayColor]]
-                                       withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(3, 3, 65, 40) status:"PLEASE \n ANALYSE" color:[CPColor colorWithCalibratedRed:1.0 green:0.0 blue:1.0 alpha:0.7]]
+                                   withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(68, 3, 65, 40) status:"PLEASE \n TEST" color:[CPColor colorWithCalibratedRed:1.0 green:0.4 blue:0.2 alpha:0.7]]
+                                   withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(68*2, 3, 65, 40) status:"DONE" color:[CPColor colorWithCalibratedRed:70 / 255 green:130 / 255 blue:180 / 255  alpha:0.7]]
+                                   withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(68*3, 3, 65, 40) status:"BLOCKED" color:[CPColor colorWithCalibratedRed:112 / 255 green:147 / 255 blue:219 / 255  alpha:0.7]]
+                                   withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(3, 50, 65, 40) status:"HIGH \n PRIORITY" color:[CPColor colorWithCalibratedRed:255 / 255 green:16 / 255 blue:16 / 255 alpha:0.7]]
+                                      withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(68, 50, 65, 40) status:"WAITING" color:[CPColor colorWithCalibratedRed:255 / 255  green:165 / 255  blue:79 / 255  alpha:0.7]]
+                                      withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(68*2, 50, 65, 40) status:"DELEGATED" color:[CPColor colorWithCalibratedRed:193 / 255 green:255 / 255 blue:193 / 255  alpha:0.7]]
+                                      withWeight:CPLightShadow]];
+        [self addSubview:[CPShadowView shadowViewEnclosingView:[StatusTask withFrame:CGRectMake(68*3, 50, 65, 40) status:"BUG" color:[CPColor colorWithCalibratedRed:85 / 255 green:107 / 255 blue:47 / 255  alpha:0.7]]
+                                      withWeight:CPLightShadow]];
     }
     return self;
 }

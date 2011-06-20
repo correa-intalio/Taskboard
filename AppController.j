@@ -22,7 +22,7 @@
 
     var taskboard = [[Taskboard alloc] initWithFrame:CGRectMake(0, 0, 1024, 600)];
     [taskboard setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
-    [taskboard setCenter:[contentView center]];
+    // [taskboard setCenter:[contentView center]];
     [contentView addSubview:taskboard];
 
     [theWindow orderFront:self];

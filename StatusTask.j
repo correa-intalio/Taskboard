@@ -23,18 +23,19 @@ StatusTaskDragType = @"StatusTaskDragType"
             height = [[self bounds].size.height];
 
         [self setColor1:color];
-        [self setColor2:[CPColor whiteColor]];
+        [self setColor2:color];
 
-        [self setBorderType:CPGrooveBorder];
+        [self setBorderType:CPLineBorder];
         [self setBorderColor:[CPColor blackColor]];
         [self setCornerRadius:3];
         var textFiel = [[CPTextField alloc] initWithFrame:CGRectMake(0,0,300,0)];
         [textFiel setStringValue:status];
         [textFiel setEditable:NO];
-        [textFiel setFont:[CPFont systemFontOfSize:14.0]];
+        [textFiel setAlignment:CPCenterTextAlignment];
+        [textFiel setFont:[CPFont boldSystemFontOfSize:10.0]];
         [textFiel sizeToFit];
+        // [textFiel setCenter:CGPointMake(width / 2, height / 2)];
         [self addSubview:textFiel];
-        // [textFiel setCenter:[self center]];
     }
     return self;
 }

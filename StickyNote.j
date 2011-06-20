@@ -26,7 +26,7 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
         var label = [[LPMultiLineTextField alloc] initWithFrame:CGRectMake(0,height * (1 / 3),width,height * (2 / 3))];
         [label setStringValue:[task title]];
         [label setEditable:YES];
-        [label setFont:[CPFont boldSystemFontOfSize:14.0]];
+        //[label setFont:[CPFont boldSystemFontOfSize:12.0]];
         [label setTextColor:[CPColor whiteColor]];
         [label setAlignment:CPCenterTextAlignment];
         //[label setBackgroundColor:[CPColor redColor]];
@@ -34,7 +34,7 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
         [label setCenter:CGPointMake(width / 2, height / 2)];
         [self addSubview:label];
         [self setBackgroundColor:[self customBackgroundImageColor]];
-        [self setAlphaValue:0.8];
+        [self setAlphaValue:0.9];
         [self registerForDraggedTypes:[CPArray arrayWithObjects:StatusTaskDragType]]; 
     }
     return self;
@@ -104,16 +104,16 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
     return column;
 }
 
-- (void)drawRect:(CPRect)aRect
-{
-    var bounds = [self bounds],
-        context = [[CPGraphicsContext currentContext] graphicsPort],
-        width = CGRectGetWidth(bounds),
-        height = CGRectGetHeight(bounds);
-
-    CGContextSetFillColor(context, [CPColor redColor]);
-    CGContextFillEllipseInRect(context, CGRectMake(width / 2 - 10 ,10,10,10));
-}
+// - (void)drawRect:(CPRect)aRect
+// {
+//     var bounds = [self bounds],
+//         context = [[CPGraphicsContext currentContext] graphicsPort],
+//         width = CGRectGetWidth(bounds),
+//         height = CGRectGetHeight(bounds);
+// 
+//     CGContextSetFillColor(context, [CPColor redColor]);
+//     CGContextFillEllipseInRect(context, CGRectMake(width / 2 - 10 ,10,10,10));
+// }
 
 - (BOOL)performDragOperation:(CPDraggingInfo)aSender { 
     var width = CGRectGetWidth([self bounds]),
