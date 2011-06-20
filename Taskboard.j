@@ -2,7 +2,7 @@
 @import "Task.j"
 @import "User.j"
 @import "StatusTask.j"
-
+@import "TaskService.j"
 
 @implementation Taskboard : CPBox
 {
@@ -38,6 +38,8 @@
                                                                                  CGRectGetHeight([self bounds]))];
         [blackboard setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
         [self addSubview:blackboard];
+        
+        var taskList = [TaskService allTask];
 
     }
     return self;
@@ -182,6 +184,7 @@
         finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,80) title:"FINISHED"];
         [self addSubview:finishedColumn];
         [self registerForDraggedTypes:[NewStickyNoteDragType]];
+
     }
     return self;
 }
