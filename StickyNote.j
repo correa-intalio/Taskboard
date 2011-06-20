@@ -126,13 +126,8 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
     if(![pasteboard availableTypeFromArray:[StatusTaskDragType]]) 
         return NO; 
     var statusTask = [pasteboard dataForType:StatusTaskDragType];
-    var textField = [[CPTextField alloc] initWithFrame:CGRectMake(0,0,300,0)];
-    [textField setStringValue:[statusTask status]];
-    [textField setEditable:NO];
-    [textField setFont:[CPFont systemFontOfSize:14.0]];
-    [textField sizeToFit];
-    [self addSubview:textField];
-    [textField setCenter:CGPointMake(width / 2, height / 2)];
+    [statusTask setCenter:CGPointMake(width / 2, height / 2)];
+    [self addSubview:statusTask];
     
 }
 
