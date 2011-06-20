@@ -23,23 +23,6 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
             height = CGRectGetHeight([self bounds]);
         
         task = aTask;
-        
-        // var mainBundle = [CPBundle mainBundle];
-        // 
-        // var path = [mainBundle pathForResource:@"sticky.png"],
-        //     image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(100, 100)],
-        //     imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-        // 
-        // [imageView setHasShadow:NO];
-        // [imageView setImageScaling:CPScaleNone];
-        // var imageSize = [image size];
-        // [imageView setFrameSize:imageSize];
-        // [imageView setImage:image];
-        // [self addSubview:imageView];
-        // 
-        // [self setBackgroundColor:YellowColor];
-        // [self setBorderType:CPLineBorder];
-
         var label = [[LPMultiLineTextField alloc] initWithFrame:CGRectMake(0,height * (1 / 3),width,height * (2 / 3))];
         [label setStringValue:[task title]];
         [label setEditable:YES];
@@ -51,6 +34,7 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
         [label setCenter:CGPointMake(width / 2, height / 2)];
         [self addSubview:label];
         [self setBackgroundColor:[self customBackgroundImageColor]];
+        [self setAlphaValue:0.8];
         [self registerForDraggedTypes:[CPArray arrayWithObjects:StatusTaskDragType]]; 
     }
     return self;
@@ -97,15 +81,15 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
 	
 	if( index == 0)
 	{
-		[label setStringValue:@"Not Started"];
+		[task setStatus:NotStartedStatusTask];
 	}
 	if( index == 1)
 	{
-		[label setStringValue:@"In Progress"];
+		[task setStatus:InProgresStatusTask];
 	}
 	if( index == 2)
 	{
-		[label setStringValue:@"Finished"];
+		[task setStatus:FinishedtatusTask];
 	}
 	
 
@@ -128,16 +112,10 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
         height = CGRectGetHeight(bounds);
 
     CGContextSetFillColor(context, [CPColor redColor]);
-    CGContextFillEllipseInRect(context, CGRectMake(width / 2 - 10 ,10,10,10), 40, 40);
-
-    // CGContextSetStrokeColor(context, [CPColor lightGrayColor]);
-    // CGContextStrokeRect(context, CGRectInset([self bounds], 0.5, 0.5));
-    
+    CGContextFillEllipseInRect(context, CGRectMake(width / 2 - 10 ,10,10,10));
 }
 
 - (BOOL)performDragOperation:(CPDraggingInfo)aSender { 
-    // if we are here, then the user has finally released the 
-    // mouse over the dropZone element 
     var width = CGRectGetWidth([self bounds]),
         height = CGRectGetHeight([self bounds]);
         
@@ -152,10 +130,6 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
     
 }
 
-// the methods below can be used to highlight the drop zone 
-// when the user drags an element over a potential drop 
-// zone (as described in the Scrapbook tutorial on the CP 
-// website). I left them in here for toying purposes. 
 - (void) draggingEntered:(CPDraggingInfo)aSender { 
     [self setActive:YES]; 
 }

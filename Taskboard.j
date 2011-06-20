@@ -169,9 +169,10 @@
     self = [super initWithFrame:aFrame];
     if (self)
     {
-        // [self setBackgroundColor:[CPColor lightGrayColor]];
+        [self setDraggingExitedBorder];
         var width = CGRectGetWidth([self bounds]) / 3,
             height = CGRectGetHeight([self bounds]);
+        
         
         notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,100) title:"NOT STARTED"];
         [self addSubview:notStartedColumn];
@@ -179,7 +180,8 @@
         [self addSubview:inProgressColumn];
         finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,100) title:"FINISHED"];
         [self addSubview:finishedColumn];
-        
+        [self registerForDraggedTypes:[NewStickyNoteDragType]];
+
         var stickyNote1 = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 100, 100) task:[Task taskWithTitle:"Task User"]];
         [self addSubview:stickyNote1];
         var stickyNote2 = [[StickyNote alloc] initWithFrame:CGRectMake(200, 200, 100, 100) task:[Task taskWithTitle:"Task User"]];
@@ -190,6 +192,38 @@
     return self;
 }
 
+- (void)setDraggingEnteredBorder
+{
+    [self setBorderType:CPLineBorder];
+    [self setBorderColor:[CPColor grayColor]];
+}
+
+- (void)setDraggingExitedBorder
+{
+    [self setBorderType:CPNoBorder];
+    [self setBorderColor:nil];
+}
+
+- (void)draggingEntered:(CPDraggingInfo)aSender
+{
+    [self setDraggingEnteredBorder];
+}
+
+- (void)draggingExited:(CPDraggingInfo)aSender
+{
+    [self setDraggingExitedBorder];
+}
+
+- (void)performDragOperation:(CPDraggingInfo)aSender
+{
+    [self setDraggingExitedBorder];
+   var data = [[aSender draggingPasteboard] dataForType:NewStickyNoteDragType];
+   console.log([aSender draggedView], [aSender draggedViewLocation], [aSender draggingDestinationWindow], [aSender draggingLocation], [aSender draggingSource]);
+   var stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 100, 100) task:[Task taskWithTitle:"Task User"]];
+   [stickyNote setCenter:[aSender draggingLocation]];
+   [self addSubview:stickyNote];
+   
+}
 - (void)drawRect:(CPRect)aRect
 {
     var bounds = [self bounds],
@@ -261,7 +295,7 @@
 
 NewStickyNoteDragType = "NewStickyNoteDragType";
 
-@implementation NewStickyNote : CPBox
+@implementation NewStickyNote : CPView
 {
 }
 - (id)initWithFrame:(CGRect)aFrame
@@ -272,30 +306,37 @@ NewStickyNoteDragType = "NewStickyNoteDragType";
         var width = CGRectGetWidth([self bounds]),
             height = CGRectGetHeight([self bounds]);
 
-        var mainBundle = [CPBundle mainBundle];
-
-        var path = [mainBundle pathForResource:@"sticky.png"],
-            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(100, 100)],
-            imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-
-        [imageView setHasShadow:NO];
-        [imageView setImageScaling:CPScaleNone];
-        var imageSize = [image size];
-        [imageView setFrameSize:imageSize];
-        [imageView setImage:image];
-        [self addSubview:imageView];
-
-        [self setBorderType:CPLineBorder];
-
-        var label = [[LPMultiLineTextField alloc] initWithFrame:CGRectMake(0,height * (1 / 3),width,height * (2 / 3))];
+        var label = [[CPTextField alloc] initWithFrame:CGRectMake(0,height * (1 / 3),width,height * (2 / 3))];
         [label setStringValue:"New Task"];
         [label setEditable:NO];
         [label setFont:[CPFont boldSystemFontOfSize:14.0]];
         [label setAlignment:CPCenterTextAlignment];
         [label setCenter:CGPointMake(width / 2, height / 2)];
+        [label setTextColor:[CPColor whiteColor]];
+        [label setAlignment:CPCenterTextAlignment];
+        [self setBackgroundColor:[self customBackgroundImageColor]];
+        [self setAlphaValue:0.8];
         [self addSubview:label];
     }
     return self;
+}
+
+- (CPColor)customBackgroundImageColor
+{
+    var bundle = [CPBundle bundleForClass:[self class]],
+        backgroundImage = [CPColor colorWithPatternImage:[[CPNinePartImage alloc] initWithImageSlices:[
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top-left.png"] size:CPSizeMake(10.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top.png"] size:CPSizeMake(1.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top-right.png"] size:CPSizeMake(10.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"left.png"] size:CPSizeMake(10.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"center.png"] size:CPSizeMake(1.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"right.png"] size:CPSizeMake(10.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom-left.png"] size:CPSizeMake(10.0, 12.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom.png"] size:CPSizeMake(1.0, 12.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom-right.png"] size:CPSizeMake(10.0, 12.0)],
+        ]]];
+    
+    return backgroundImage;
 }
 
 - (void)mouseDragged:(CPEvent)anEvent
