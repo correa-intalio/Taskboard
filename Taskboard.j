@@ -85,11 +85,13 @@
 }
 - (id)initWithFrame:(CGRect)aFrame title:(CPString)aTitle
 {
-    self = [super initWithFrame:aFrame];
+    self = [super initWithFrame:CGRectInset(aFrame, 5.0, 5.0)];
     if (self)
     {
         title = aTitle;
         [self setBackgroundColor:[CPColor whiteColor]];
+        [self setBorderType:CPNoBorder];
+        
         var width = CGRectGetWidth([self bounds]),
             height = CGRectGetHeight([self bounds]),
             mainBundle = [CPBundle mainBundle];
@@ -106,7 +108,7 @@
         [self addSubview:imageView];
         
         var titleView = [[CPBox alloc] initWithFrame:CGRectMake(0,0,CGRectGetWidth([self bounds]),100)];
-        [titleView setBorderType:CPLineBorder];
+        [titleView setBorderType:CPNoBorder];
         [titleView setBorderColor:[CPColor lightGrayColor]];
         [self addSubview:titleView];
 
@@ -120,19 +122,33 @@
         [titleTextField setCenter:[titleView center]];
         [titleView addSubview:titleTextField];
 
-		[self registerForDraggedTypes:[CPArray arrayWithObject:[StickyNoteDragType]]];
-        //TODO Melisa: agregar logicamente segun tamaños
-        
-        var stickyBounds = width/3,
-            stickyNote1 = [[StickyNote alloc] initWithFrame:CGRectMake(0, CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)],
-            stickyNote2 = [[StickyNote alloc] initWithFrame:CGRectMake(CGRectGetWidth([stickyNote1 bounds]), CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)],
-            stickyNote3 = [[StickyNote alloc] initWithFrame:CGRectMake(CGRectGetWidth([stickyNote1 bounds]) * 2, CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)];
-        [self addSubview:stickyNote1];
-        [self addSubview:stickyNote2];
-        [self addSubview:stickyNote3];
+        // [self registerForDraggedTypes:[CPArray arrayWithObject:[StickyNoteDragType]]];
+        //         //TODO Melisa: agregar logicamente segun tamaños
+        //         
+        //         var stickyBounds = width/3,
+        //             stickyNote1 = [[StickyNote alloc] initWithFrame:CGRectMake(0, CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)],
+        //             stickyNote2 = [[StickyNote alloc] initWithFrame:CGRectMake(CGRectGetWidth([stickyNote1 bounds]), CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)],
+        //             stickyNote3 = [[StickyNote alloc] initWithFrame:CGRectMake(CGRectGetWidth([stickyNote1 bounds]) * 2, CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)];
+        //         [self addSubview:stickyNote1];
+        //         [self addSubview:stickyNote2];
+        //         [self addSubview:stickyNote3];
     }
     return self;
 }
+
+- (void)drawRect:(CPRect)aRect
+{
+    [super drawRect:aRect];
+    var context = [[CPGraphicsContext currentContext] graphicsPort],
+        bounds = [self bounds],
+        sides = [CPMinYEdge, CPMaxYEdge, CPMinXEdge, CPMaxXEdge],
+        colors = [[CPColor whiteColor], [CPColor grayColor], [CPColor whiteColor], [CPColor whiteColor]],
+        innerRect = CPDrawColorTiledRects(bounds, bounds, sides, colors);  
+
+    CGContextSetFillColor(context, [CPColor whiteColor]);
+    CGContextFillRect(context, innerRect);
+}
+
 - (void)performDragOperation:(CPDraggingInfo)aSender
 {
 	CPLog.trace("performDragOperatio");
@@ -157,19 +173,35 @@
     self = [super initWithFrame:aFrame];
     if (self)
     {
-        [self setBackgroundColor:[CPColor lightGrayColor]];
+        // [self setBackgroundColor:[CPColor whiteColor]];
         var width = CGRectGetWidth([self bounds]) / 3,
             height = CGRectGetHeight([self bounds]);
         
-        notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,height) title:"NOT STARTED"];
+        notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,100) title:"NOT STARTED"];
         [self addSubview:notStartedColumn];
-        inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,height) title:"IN PROGRESS"];
-        [self addSubview:inProgressColumn];
-        finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,height) title:"FINISHED"];
-        [self addSubview:finishedColumn];
+        // inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,height) title:"IN PROGRESS"];
+        // [self addSubview:inProgressColumn];
+        // finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,height) title:"FINISHED"];
+        // [self addSubview:finishedColumn];
     }
     return self;
 }
+
+- (void)drawRect:(CPRect)aRect
+{
+    var bounds = [self bounds],
+        context = [[CPGraphicsContext currentContext] graphicsPort],
+        width = CGRectGetWidth(bounds)/3,
+        height = CGRectGetHeight(bounds);
+
+        CGContextSetLineWidth(context, 3);
+        CGContextStrokeLineSegments(context, 
+                                    [CGPointMake(width, 0),
+                                            CGPointMake(width, height),
+                                        CGPointMake(width + width, 0),
+                                            CGPointMake(width + width, height)],
+                                    4);
+    }
 @end
 
 @implementation TaskboardNavigationArea : CPBox
