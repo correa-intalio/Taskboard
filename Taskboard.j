@@ -216,12 +216,15 @@
 
 - (void)performDragOperation:(CPDraggingInfo)aSender
 {
-    [self setDraggingExitedBorder];
-   var data = [[aSender draggingPasteboard] dataForType:NewStickyNoteDragType];
-   console.log([aSender draggedView], [aSender draggedViewLocation], [aSender draggingDestinationWindow], [aSender draggingLocation], [aSender draggingSource]);
-   var stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 100, 100) task:[Task taskWithTitle:"Task User"]];
-   [stickyNote setCenter:[aSender draggingLocation]];
-   [self addSubview:stickyNote];
+	var location = [self convertPoint:[aSender draggingLocation] fromView:nil];
+	[self setDraggingExitedBorder];
+   	var data = [[aSender draggingPasteboard] dataForType:NewStickyNoteDragType];
+
+   	console.log([aSender draggedView], [aSender draggedViewLocation], [aSender draggingDestinationWindow], [aSender draggingLocation], [aSender draggingSource]);
+
+   	var stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 100, 100) task:[Task taskWithTitle:"Task User"]];
+    [stickyNote setFrameOrigin:CGPointMake(location.x - CGRectGetWidth([stickyNote frame]) / 2.0, location.y - CGRectGetHeight([stickyNote frame]) / 2.0)];
+   	[self addSubview:stickyNote];
    
 }
 - (void)drawRect:(CPRect)aRect
