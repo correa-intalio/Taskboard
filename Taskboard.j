@@ -157,7 +157,7 @@
     self = [super initWithFrame:aFrame];
     if (self)
     {
-        [self setBackgroundColor:[CPColor lightGrayColor]];
+        // [self setBackgroundColor:[CPColor whiteColor]];
         var width = CGRectGetWidth([self bounds]) / 3,
             height = CGRectGetHeight([self bounds]);
         
@@ -175,11 +175,17 @@
 {
     var bounds = [self bounds],
         context = [[CPGraphicsContext currentContext] graphicsPort],
-        width = CGRectGetWidth(bounds),
+        width = CGRectGetWidth(bounds)/3,
         height = CGRectGetHeight(bounds);
-
         
-        CGContextStrokeLineSegments(context, [CGPointMake(10, 10),CGPointMake(200, 200)],2);
+        CGContextStrokeLineSegments(context, 
+                                    [
+                                        CGPointMake(width, 0),
+                                            CGPointMake(width, height),
+                                        CGPointMake(width + width, 0),
+                                            CGPointMake(width + width, height)
+                                    ],
+                                    4);
         
     }
 @end
