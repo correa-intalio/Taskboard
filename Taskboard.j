@@ -182,13 +182,6 @@
         finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,80) title:"FINISHED"];
         [self addSubview:finishedColumn];
         [self registerForDraggedTypes:[NewStickyNoteDragType]];
-
-        var stickyNote1 = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 100, 100) task:[Task taskWithTitle:"Task User"]];
-        [self addSubview:stickyNote1];
-        var stickyNote2 = [[StickyNote alloc] initWithFrame:CGRectMake(200, 200, 100, 100) task:[Task taskWithTitle:"Task User"]];
-        [self addSubview:stickyNote2];
-        var stickyNote3 = [[StickyNote alloc] initWithFrame:CGRectMake(300, 300, 100, 100) task:[Task taskWithTitle:"Task User"]];
-        [self addSubview:stickyNote3];
     }
     return self;
 }
