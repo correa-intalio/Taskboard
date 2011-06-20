@@ -25,10 +25,12 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
         [self setBackgroundColor:YellowColor];
         [self setBorderType:CPLineBorder];
         
-        var label = [[LPMultiLineTextField alloc] initWithFrame:CGRectMake(0,height * 1 / 3,width,height * 2 / 3)];
+        var label = [[LPMultiLineTextField alloc] initWithFrame:CGRectMake(0,height * (1 / 3),width,height * (2 / 3))];
         [label setStringValue:"[task title]"];
         [label setEditable:YES];
         [label setFont:[CPFont boldSystemFontOfSize:14.0]];
+        [label setAlignment:CPCenterTextAlignment];
+        //[label setBackgroundColor:[CPColor redColor]];
         //[label sizeToFit];
         [label setCenter:CGPointMake(width / 2, height / 2)];
         [self addSubview:label];
