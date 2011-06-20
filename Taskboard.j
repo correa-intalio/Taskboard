@@ -97,16 +97,16 @@
             height = CGRectGetHeight([self bounds]),
             mainBundle = [CPBundle mainBundle];
 
-        var path = [mainBundle pathForResource:@"title.png"],
-            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(200, 50)],
-            imageView = [[CPImageView alloc] initWithFrame:CGRectMake(10, 10, width, height)];
-
-        [imageView setHasShadow:NO];
-        [imageView setImageScaling:CPScaleNone];
-        var imageSize = [image size];
-        [imageView setFrameSize:imageSize];
-        [imageView setImage:image];
-        [self addSubview:imageView];
+        // var path = [mainBundle pathForResource:@"title.png"],
+        //     image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(200, 50)],
+        //     imageView = [[CPImageView alloc] initWithFrame:CGRectMake(10, 10, width, height)];
+        // 
+        // [imageView setHasShadow:NO];
+        // [imageView setImageScaling:CPScaleNone];
+        // var imageSize = [image size];
+        // [imageView setFrameSize:imageSize];
+        // [imageView setImage:image];
+        // [self addSubview:imageView];
         
         var titleView = [[CPBox alloc] initWithFrame:CGRectMake(0,0,CGRectGetWidth([self bounds]),100)];
         [titleView setBorderType:CPNoBorder];
@@ -120,7 +120,7 @@
         [titleTextField sizeToFit];
 
         [titleTextField setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
-        [titleTextField setCenter:[titleView center]];
+        [titleTextField setCenter:CGPointMake(width / 2, height / 2)];
         [titleView addSubview:titleTextField];
 
     }
@@ -174,11 +174,11 @@
             height = CGRectGetHeight([self bounds]);
         
         
-        notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,100) title:"NOT STARTED"];
+        notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,80) title:"NOT STARTED"];
         [self addSubview:notStartedColumn];
-        inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,100) title:"IN PROGRESS"];
+        inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,80) title:"IN PROGRESS"];
         [self addSubview:inProgressColumn];
-        finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,100) title:"FINISHED"];
+        finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,80) title:"FINISHED"];
         [self addSubview:finishedColumn];
         [self registerForDraggedTypes:[NewStickyNoteDragType]];
 
