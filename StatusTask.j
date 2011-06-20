@@ -9,6 +9,7 @@ StatusTaskDragType = "StatusTaskDragType"
     CPColor     color1;
     CPColor     color2;
     CPString    orientation     @accessors;
+    CGPoint     dragLocation;
 }
 
 - (id)initWithFrame:(CGRect)aFrame status:(CPString)aStatus color:(CPColor)aColor
@@ -39,22 +40,27 @@ StatusTaskDragType = "StatusTaskDragType"
     return self;
 }
 
+- (void)mouseUp:(CPEvent)anEvent
+{
+    console.log("mouseUp");
+}
+
+- (void)mouseDown:(CPEvent)anEvent
+{
+    editedOrigin = [self frame].origin;
+    dragLocation = [anEvent locationInWindow];
+}
+
 - (void)mouseDragged:(CPEvent)anEvent
 {   
-    var point = [self convertPoint:[anEvent locationInWindow] fromView:nil],
-            bounds = CGRectMake(0, 0, 30, 30);
-            
-    [[CPPasteboard pasteboardWithName:CPDragPboard] declareTypes:[CPArray arrayWithObject:[StatusTaskDragType]] owner:self];    
+    var location = [anEvent locationInWindow],
+        origin = [self frame].origin;
+    
+    [self setFrameOrigin:CGPointMake(origin.x + location.x - dragLocation.x, origin.y + location.y - dragLocation.y)];
 
-    [self dragView: [self mutableCopy]
-                at: CPPointMakeZero()
-            offset: CPPointMake(0.0, 0.0)
-             event: anEvent
-        pasteboard: nil
-            source: self
-         slideBack: YES];
-    }
+    dragLocation = location;
 }
+
 - (void)pasteboard:(CPPasteboard)aPasteboard provideDataForType:(CPString)aType
 {
     console.log(aType);

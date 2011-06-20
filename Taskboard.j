@@ -141,17 +141,22 @@
     [super drawRect:aRect];
     var context = [[CPGraphicsContext currentContext] graphicsPort],
         bounds = [self bounds],
-        sides = [CPMinYEdge, CPMaxYEdge, CPMinXEdge, CPMaxXEdge],
-        colors = [[CPColor whiteColor], [CPColor grayColor], [CPColor whiteColor], [CPColor whiteColor]],
-        innerRect = CPDrawColorTiledRects(bounds, bounds, sides, colors);  
+        width = CGRectGetWidth(bounds),
+        height = CGRectGetHeight(bounds);
 
-    CGContextSetFillColor(context, [CPColor whiteColor]);
-    CGContextFillRect(context, innerRect);
+        CGContextSetLineWidth(context, 3);
+        CGContextStrokeLineSegments(context, 
+                                    [CGPointMake(0, height),
+                                            CGPointMake(width, height),
+                                        CGPointMake(0, height - 1),
+                                            CGPointMake(width, height - 1)],
+                                    4);
+
 }
 
 - (void)performDragOperation:(CPDraggingInfo)aSender
 {
-	CPLog.trace("performDragOperatio");
+	CPLog.trace("performDragOperation");
     /*var taskView = [CPKeyedUnarchiver unarchiveObjectWithData:[[aSender draggingPasteboard] dataForType:StickyNoteDragType]],
         location = [self convertPoint:[aSender draggingLocation] fromView:nil];
     
