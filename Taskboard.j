@@ -39,7 +39,6 @@
         [blackboard setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
         [self addSubview:blackboard];
         
-        var taskList = [TaskService allTask];
 
     }
     return self;
@@ -166,6 +165,12 @@
     TaskboardColumn notStartedColumn @accessors;
     TaskboardColumn inProgressColumn @accessors;
     TaskboardColumn finishedColumn @accessors;
+	CPArray			taskList;
+	CPArray			views;
+	float			horizontalMargin;
+	float           verticalMargin;
+	float			originY;
+	float			columnWidth;
 }
 - (id)initWithFrame:(CGRect)aFrame
 {
@@ -185,8 +190,51 @@
         [self addSubview:finishedColumn];
         [self registerForDraggedTypes:[NewStickyNoteDragType]];
 
+        taskList = [TaskService allTask];
+		horizontalMargin = 5.0;
+		verticalMargin = 5.0;
+		originY = 80;
+		columnWidth = CGRectGetWidth([self bounds]) / 3;
+		views = [];
+		//[self reloadContent];
+
+
     }
     return self;
+}
+
+- (void)reloadContent
+{
+	var index = 0;
+
+	var count = views.length;
+	while (count--)
+	{
+		[views[count] removeFromSuperview];
+	}
+		
+	count = taskList.length;
+	var numberOfColumns = MAX(1.0, FLOOR(columnWidth / 100));
+	var horizontalMargin = FLOOR((columnWidth - numberOfColumns * 100) / (numberOfColumns + 1));
+	var x = horizontalMargin,
+		y = -100 + originY; 
+	
+	for (; index < count; ++index)
+	{
+		var stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0,0,100,100) task:taskList[index]];
+		views.push(stickyNote);
+		[self addSubview:stickyNote];
+		
+		if (index % numberOfColumns == 0)
+		{
+			x = horizontalMargin;
+			y += verticalMargin + 100;
+		 }
+
+		[stickyNote setFrameOrigin:CGPointMake(x, y)];
+		
+		x += 100 + horizontalMargin;		
+	}	
 }
 
 - (void)setDraggingEnteredBorder
@@ -216,12 +264,10 @@
 	var location = [self convertPoint:[aSender draggingLocation] fromView:nil];
 	[self setDraggingExitedBorder];
    	var data = [[aSender draggingPasteboard] dataForType:NewStickyNoteDragType];
-
-   	console.log([aSender draggedView], [aSender draggedViewLocation], [aSender draggingDestinationWindow], [aSender draggingLocation], [aSender draggingSource]);
-
    	var stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 150, 150) task:[Task taskWithTitle:"Task User"]];
     [stickyNote setFrameOrigin:CGPointMake(location.x - CGRectGetWidth([stickyNote frame]) / 2.0, location.y - CGRectGetHeight([stickyNote frame]) / 2.0)];
-   	[self addSubview:stickyNote];
+   	//views.push(stickyNote);
+	[self addSubview:stickyNote];
    
 }
 - (void)drawRect:(CPRect)aRect

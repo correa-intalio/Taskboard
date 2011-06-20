@@ -11,22 +11,23 @@ FinishedtatusTask = @"FinishedtatusTask";
 
 - (id)initWithTitle:(CPString)aTitle
 {
+    self = [self initWithTitle:aTitle status:NotStartedStatusTask];
+    return self;
+}
+
+- (id)initWithTitle:(CPString)aTitle status:(CPString)aStatus
+{
     if (self = [super init])
     {
         title = aTitle;
-        status = NotStartedStatusTask;
+        status = aStatus;
     }
     return self;
 }
 
 - (id)initWithJSONObject:(JSObject)jsonObject
 {
-    self = [super init];
-    if (self) 
-    {
-        name    = jsonObject.title;
-        status  = jsonObject.status;
-    }
+    self = [self initWithTitle:jsonObject.title status:jsonObject.status];
     return self;
 }
 
@@ -50,6 +51,7 @@ FinishedtatusTask = @"FinishedtatusTask";
 
     for (var i=0; i < someJSONObjects.length; i++) {
         var task = [[Task alloc] initWithJSONObject:someJSONObjects[i]] ;
+		console.log('Task', task);
         [taskList addObject:task] ;
     };
     
