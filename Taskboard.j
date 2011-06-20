@@ -190,8 +190,11 @@
         [self addSubview:finishedColumn];
         
         var stickyNote1 = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-        
         [self addSubview:stickyNote1];
+        var stickyNote2 = [[StickyNote alloc] initWithFrame:CGRectMake(200, 200, 100, 100)];
+        [self addSubview:stickyNote2];
+        var stickyNote3 = [[StickyNote alloc] initWithFrame:CGRectMake(300, 300, 100, 100)];
+        [self addSubview:stickyNote3];
     }
     return self;
 }
@@ -210,7 +213,7 @@
                                         CGPointMake(width + width, 0),
                                             CGPointMake(width + width, height)],
                                     4);
-    }
+}
 @end
 
 @implementation TaskboardNavigationArea : CPBox
