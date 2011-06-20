@@ -18,7 +18,7 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
             height = [[self bounds].size.height];
         
         
-        [self setBackgroundColor:BlueColor];
+        [self setBackgroundColor:YellowColor];
         
     }
     return self;
