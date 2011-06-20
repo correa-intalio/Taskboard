@@ -6,14 +6,15 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
     BlueColor = [CPColor colorWithCalibratedRed:0.0 green:0.0 blue:1.0 alpha:0.7];
 
 
-@implementation StickyNote : CPBox
+@implementation StickyNote : CPView
 {
-	CGPoint     			dragLocation;
+	CGPoint                 dragLocation;
 	LPMultiLineTextField	label;
-	Task        			task @accessors;
+	Task                    task @accessors;
+	StatusTask              status @accessors;
 }
 
-- (id)initWithFrame:(CGRect)aFrame
+- (id)initWithFrame:(CGRect)aFrame task:(Task)aTask
 {
     self = [super initWithFrame:aFrame];
     if (self)
@@ -21,36 +22,56 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
         var width = CGRectGetWidth([self bounds]),
             height = CGRectGetHeight([self bounds]);
         
-        task = [Task taskWithTitle:"Task User"];
+        task = aTask;
         
-        var mainBundle = [CPBundle mainBundle];
+        // var mainBundle = [CPBundle mainBundle];
+        // 
+        // var path = [mainBundle pathForResource:@"sticky.png"],
+        //     image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(100, 100)],
+        //     imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        // 
+        // [imageView setHasShadow:NO];
+        // [imageView setImageScaling:CPScaleNone];
+        // var imageSize = [image size];
+        // [imageView setFrameSize:imageSize];
+        // [imageView setImage:image];
+        // [self addSubview:imageView];
+        // 
+        // [self setBackgroundColor:YellowColor];
+        // [self setBorderType:CPLineBorder];
 
-        var path = [mainBundle pathForResource:@"sticky.png"],
-            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(100, 100)],
-            imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-
-        [imageView setHasShadow:NO];
-        [imageView setImageScaling:CPScaleNone];
-        var imageSize = [image size];
-        [imageView setFrameSize:imageSize];
-        [imageView setImage:image];
-        [self addSubview:imageView];
-
-        [self setBackgroundColor:YellowColor];
-        [self setBorderType:CPLineBorder];
-        
         var label = [[LPMultiLineTextField alloc] initWithFrame:CGRectMake(0,height * (1 / 3),width,height * (2 / 3))];
-        [label setStringValue:"[task title]"];
+        [label setStringValue:[task title]];
         [label setEditable:YES];
         [label setFont:[CPFont boldSystemFontOfSize:14.0]];
+        [label setTextColor:[CPColor whiteColor]];
         [label setAlignment:CPCenterTextAlignment];
         //[label setBackgroundColor:[CPColor redColor]];
         //[label sizeToFit];
         [label setCenter:CGPointMake(width / 2, height / 2)];
         [self addSubview:label];
+        [self setBackgroundColor:[self customBackgroundImageColor]];
         [self registerForDraggedTypes:[CPArray arrayWithObjects:StatusTaskDragType]]; 
     }
     return self;
+}
+
+- (CPColor)customBackgroundImageColor
+{
+    var bundle = [CPBundle bundleForClass:[self class]],
+        backgroundImage = [CPColor colorWithPatternImage:[[CPNinePartImage alloc] initWithImageSlices:[
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top-left.png"] size:CPSizeMake(10.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top.png"] size:CPSizeMake(1.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top-right.png"] size:CPSizeMake(10.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"left.png"] size:CPSizeMake(10.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"center.png"] size:CPSizeMake(1.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"right.png"] size:CPSizeMake(10.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom-left.png"] size:CPSizeMake(10.0, 12.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom.png"] size:CPSizeMake(1.0, 12.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom-right.png"] size:CPSizeMake(10.0, 12.0)],
+        ]]];
+    
+    return backgroundImage;
 }
 
 - (void)mouseDown:(CPEvent)anEvent
@@ -109,8 +130,8 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
     CGContextSetFillColor(context, [CPColor redColor]);
     CGContextFillEllipseInRect(context, CGRectMake(width / 2 - 10 ,10,10,10), 40, 40);
 
-    CGContextSetStrokeColor(context, [CPColor lightGrayColor]);
-    CGContextStrokeRect(context, CGRectInset([self bounds], 0.5, 0.5));
+    // CGContextSetStrokeColor(context, [CPColor lightGrayColor]);
+    // CGContextStrokeRect(context, CGRectInset([self bounds], 0.5, 0.5));
     
 }
 
@@ -145,4 +166,29 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
     isActive = ifIsActive; 
 }
 
++ (CPString)themeClass
+{
+    return @"sticky-view";
+}
+
++ (id)themeAttributes
+{
+    var bundle = [CPBundle bundleForClass:[self class]],
+        backgroundImage = [CPColor colorWithPatternImage:[[CPNinePartImage alloc] initWithImageSlices:[
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top-left.png"] size:CPSizeMake(10.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top.png"] size:CPSizeMake(1.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top-right.png"] size:CPSizeMake(10.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"left.png"] size:CPSizeMake(10.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"center.png"] size:CPSizeMake(1.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"right.png"] size:CPSizeMake(10.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom-left.png"] size:CPSizeMake(10.0, 12.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom.png"] size:CPSizeMake(1.0, 12.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom-right.png"] size:CPSizeMake(10.0, 12.0)],
+        ]]];
+
+
+
+    return [CPDictionary dictionaryWithObjects:[backgroundImage, [CPColor whiteColor], 0.8]
+                                       forKeys:[@"background-color", @"text-color", @"alpha-value"]];
+}
 @end

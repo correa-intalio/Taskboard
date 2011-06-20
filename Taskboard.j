@@ -24,9 +24,8 @@
         [self setBorderColor:[CPColor lightGrayColor]];
 
         userList = [self createMockUserList];
-        // var label = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
         
-        var toolbar = [[TaskboardToolBar alloc] initWithFrame:CGRectMake(1,1,CGRectGetWidth([self bounds]) - 2,100)];
+        var toolbar = [[TaskboardToolBar alloc] initWithFrame:CGRectMake(1,1,CGRectGetWidth([self bounds]) - 2,110)];
         [self addSubview:toolbar];
         
         var navigationArea = [[TaskboardNavigationArea alloc] initWithFrame:CGRectMake(1,CGRectGetHeight([toolbar bounds]),100,CGRectGetHeight([self bounds]))];
@@ -59,7 +58,9 @@
     self = [super initWithFrame:aFrame];
     if (self)
     {
-        [self addSubview:[[[StatusTaskPanel alloc] init] initWithFrame:CGRectMake(100, 0, 400, 100)]];
+        
+        [self addSubview:[[[NewStickyNote alloc] init] initWithFrame:CGRectMake(5, 5, 100, 100)]];
+        [self addSubview:[[[StatusTaskPanel alloc] init] initWithFrame:CGRectMake(110, 0, 400, 100)]];
     }
     return self;
 }
@@ -122,16 +123,6 @@
         [titleTextField setCenter:[titleView center]];
         [titleView addSubview:titleTextField];
 
-        // [self registerForDraggedTypes:[CPArray arrayWithObject:[StickyNoteDragType]]];
-        //         //TODO Melisa: agregar logicamente segun tamaños
-        //         
-        //         var stickyBounds = width/3,
-        //             stickyNote1 = [[StickyNote alloc] initWithFrame:CGRectMake(0, CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)],
-        //             stickyNote2 = [[StickyNote alloc] initWithFrame:CGRectMake(CGRectGetWidth([stickyNote1 bounds]), CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)],
-        //             stickyNote3 = [[StickyNote alloc] initWithFrame:CGRectMake(CGRectGetWidth([stickyNote1 bounds]) * 2, CGRectGetHeight([titleView bounds]), stickyBounds, stickyBounds)];
-        //         [self addSubview:stickyNote1];
-        //         [self addSubview:stickyNote2];
-        //         [self addSubview:stickyNote3];
     }
     return self;
 }
@@ -189,11 +180,11 @@
         finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,100) title:"FINISHED"];
         [self addSubview:finishedColumn];
         
-        var stickyNote1 = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        var stickyNote1 = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 100, 100) task:[Task taskWithTitle:"Task User"]];
         [self addSubview:stickyNote1];
-        var stickyNote2 = [[StickyNote alloc] initWithFrame:CGRectMake(200, 200, 100, 100)];
+        var stickyNote2 = [[StickyNote alloc] initWithFrame:CGRectMake(200, 200, 100, 100) task:[Task taskWithTitle:"Task User"]];
         [self addSubview:stickyNote2];
-        var stickyNote3 = [[StickyNote alloc] initWithFrame:CGRectMake(300, 300, 100, 100)];
+        var stickyNote3 = [[StickyNote alloc] initWithFrame:CGRectMake(300, 300, 100, 100) task:[Task taskWithTitle:"Task User"]];
         [self addSubview:stickyNote3];
     }
     return self;
@@ -224,7 +215,7 @@
     self = [super initWithFrame:aFrame];
     if (self)
     {
-        [self setBackgroundColor:[CPColor blueColor]];
+        //[self setBackgroundColor:[CPColor blueColor]];
         
     }
     return self;
@@ -267,3 +258,71 @@
     return self;
 }
 @end
+
+NewStickyNoteDragType = "NewStickyNoteDragType";
+
+@implementation NewStickyNote : CPBox
+{
+}
+- (id)initWithFrame:(CGRect)aFrame
+{
+    self = [super initWithFrame:aFrame];
+    if (self)
+    {
+        var width = CGRectGetWidth([self bounds]),
+            height = CGRectGetHeight([self bounds]);
+
+        var mainBundle = [CPBundle mainBundle];
+
+        var path = [mainBundle pathForResource:@"sticky.png"],
+            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(100, 100)],
+            imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+
+        [imageView setHasShadow:NO];
+        [imageView setImageScaling:CPScaleNone];
+        var imageSize = [image size];
+        [imageView setFrameSize:imageSize];
+        [imageView setImage:image];
+        [self addSubview:imageView];
+
+        [self setBorderType:CPLineBorder];
+
+        var label = [[LPMultiLineTextField alloc] initWithFrame:CGRectMake(0,height * (1 / 3),width,height * (2 / 3))];
+        [label setStringValue:"New Task"];
+        [label setEditable:NO];
+        [label setFont:[CPFont boldSystemFontOfSize:14.0]];
+        [label setAlignment:CPCenterTextAlignment];
+        [label setCenter:CGPointMake(width / 2, height / 2)];
+        [self addSubview:label];
+    }
+    return self;
+}
+
+- (void)mouseDragged:(CPEvent)anEvent
+{   
+    var point = [self convertPoint:[anEvent locationInWindow] fromView:nil],
+            bounds = CGRectMake(0, 0, 30, 30);
+    [[CPPasteboard pasteboardWithName:CPDragPboard] declareTypes:[CPArray arrayWithObject:NewStickyNoteDragType] owner:self];    
+    
+    [self dragView: [self mutableCopy]
+                at: CPPointMakeZero()
+            offset: CPPointMake(0.0, 0.0)
+             event: anEvent
+        pasteboard: nil
+            source: self
+         slideBack: YES];
+    }
+}
+- (void) pasteboard:(CPPasteboard)aPasteboard provideDataForType:(CPString)aType {
+
+    if(aType == NewStickyNoteDragType) 
+        [aPasteboard setData:[self mutableCopy] forType:aType]; 
+}
+
+- (id)mutableCopy
+{   
+    return [[NewStickyNote alloc] initWithFrame:[self frame]];
+}
+
+@end
+

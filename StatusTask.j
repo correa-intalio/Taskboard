@@ -58,7 +58,7 @@ StatusTaskDragType = @"StatusTaskDragType"
 - (void) pasteboard:(CPPasteboard)aPasteboard provideDataForType:(CPString)aType {
 
     if(aType == StatusTaskDragType) 
-        [aPasteboard setData:self forType:aType]; 
+        [aPasteboard setData:[self mutableCopy] forType:aType]; 
 }
 - (void)setColor1:(CPColor)aColor
 {
