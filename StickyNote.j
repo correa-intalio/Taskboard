@@ -8,8 +8,9 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
 
 @implementation StickyNote : CPBox
 {
-	CGPoint     dragLocation;
-	Task        task @accessors;
+	CGPoint     			dragLocation;
+	LPMultiLineTextField	label;
+	Task        			task @accessors;
 }
 
 - (id)initWithFrame:(CGRect)aFrame
@@ -22,10 +23,23 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
         
         task = [Task taskWithTitle:"Task User"];
         
+        var mainBundle = [CPBundle mainBundle];
+
+        var path = [mainBundle pathForResource:@"sticky.png"],
+            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(100, 100)],
+            imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+
+        [imageView setHasShadow:NO];
+        [imageView setImageScaling:CPScaleNone];
+        var imageSize = [image size];
+        [imageView setFrameSize:imageSize];
+        [imageView setImage:image];
+        [self addSubview:imageView];
+
         [self setBackgroundColor:YellowColor];
         [self setBorderType:CPLineBorder];
         
-        var label = [[LPMultiLineTextField alloc] initWithFrame:CGRectMake(0,height * 1 / 3,width,height * 2 / 3)];
+        label = [[LPMultiLineTextField alloc] initWithFrame:CGRectMake(0,height * 1 / 3,width,height * 2 / 3)];
         [label setStringValue:"[task title]"];
         [label setEditable:YES];
         [label setFont:[CPFont boldSystemFontOfSize:14.0]];
@@ -59,15 +73,15 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
 	
 	if( index == 0)
 	{
-		[self setBackgroundColor:BlueColor];
+		[label setStringValue:@"Not Started"];
 	}
 	if( index == 1)
 	{
-		[self setBackgroundColor:YellowColor];
+		[label setStringValue:@"In Progress"];
 	}
 	if( index == 2)
 	{
-		[self setBackgroundColor:BlueColor];
+		[label setStringValue:@"Finished"];
 	}
 	
 
