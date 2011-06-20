@@ -38,6 +38,8 @@ StickyNoteDragType = @"StickyNoteDragType"
     editedOrigin = [self frame].origin;
     
     dragLocation = [anEvent locationInWindow];
+
+    [[self superview] addSubview:self];
 }
     
 - (void)performDragOperation:(CPDraggingInfo)aSender
