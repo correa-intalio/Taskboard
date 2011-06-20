@@ -177,16 +177,14 @@
         context = [[CPGraphicsContext currentContext] graphicsPort],
         width = CGRectGetWidth(bounds)/3,
         height = CGRectGetHeight(bounds);
-        
+
+        CGContextSetLineWidth(context, 3);
         CGContextStrokeLineSegments(context, 
-                                    [
-                                        CGPointMake(width, 0),
+                                    [CGPointMake(width, 0),
                                             CGPointMake(width, height),
                                         CGPointMake(width + width, 0),
-                                            CGPointMake(width + width, height)
-                                    ],
+                                            CGPointMake(width + width, height)],
                                     4);
-        
     }
 @end
 
