@@ -26,7 +26,7 @@ var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0
         [self setBorderType:CPLineBorder];
         
         var label = [[CPTextField alloc] initWithFrame:CGRectMake(0,0,300,0)];
-        [label setStringValue:[task title]];
+        [label setStringValue:"[task title]"];
         [label setEditable:YES];
         [label setFont:[CPFont boldSystemFontOfSize:14.0]];
         [label sizeToFit];
