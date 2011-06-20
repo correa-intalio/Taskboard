@@ -1,5 +1,8 @@
 
 StickyNoteDragType = @"StickyNoteDragType"
+var YellowColor = [CPColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:0.8],
+    BlueColor = [CPColor colorWithCalibratedRed:0.0 green:0.0 blue:1.0 alpha:0.7];
+
 
 @implementation StickyNote : CPBox
 {
@@ -9,26 +12,14 @@ StickyNoteDragType = @"StickyNoteDragType"
 - (id)initWithFrame:(CGRect)aFrame
 {
     self = [super initWithFrame:aFrame];
-
     if (self)
     {
         var width = [[self bounds].size.width],
             height = [[self bounds].size.height];
-            
-        var mainBundle = [CPBundle mainBundle];
-//        var frame = CGRectInset([self bounds], 5.0, 5.0);
-
-        var path = [mainBundle pathForResource:@"stickynote.jpg"],
-            image = [[CPImage alloc] initWithContentsOfFile:path size:CGSizeMake(80, 60)],
-            imageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-
-        [imageView setHasShadow:NO];
-        [imageView setImageScaling:CPScaleToFit];
-        var imageSize = [image size];
-        [imageView setFrameSize:imageSize];
-        [imageView setImage:image];
-        [self addSubview:imageView];
-        [self setBackgroundColor:[CPColor lightGrayColor]];
+        
+        
+        [self setBackgroundColor:BlueColor];
+        
     }
     return self;
 }

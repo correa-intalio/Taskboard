@@ -184,10 +184,14 @@
         
         notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,100) title:"NOT STARTED"];
         [self addSubview:notStartedColumn];
-        // inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,height) title:"IN PROGRESS"];
-        // [self addSubview:inProgressColumn];
-        // finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,height) title:"FINISHED"];
-        // [self addSubview:finishedColumn];
+        inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,100) title:"IN PROGRESS"];
+        [self addSubview:inProgressColumn];
+        finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,100) title:"FINISHED"];
+        [self addSubview:finishedColumn];
+        
+        var stickyNote1 = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        
+        [self addSubview:stickyNote1];
     }
     return self;
 }
