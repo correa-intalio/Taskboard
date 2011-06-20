@@ -145,15 +145,27 @@
         var width = CGRectGetWidth([self bounds]) / 3,
             height = CGRectGetHeight([self bounds]);
         
-        notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,height) title:"NOT STARTED"];
-        [self addSubview:notStartedColumn];
-        inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,height) title:"IN PROGRESS"];
-        [self addSubview:inProgressColumn];
-        finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,height) title:"FINISHED"];
-        [self addSubview:finishedColumn];
+        // notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,height) title:"NOT STARTED"];
+        // [self addSubview:notStartedColumn];
+        // inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,height) title:"IN PROGRESS"];
+        // [self addSubview:inProgressColumn];
+        // finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,height) title:"FINISHED"];
+        // [self addSubview:finishedColumn];
     }
     return self;
 }
+
+- (void)drawRect:(CPRect)aRect
+{
+    var bounds = [self bounds],
+        context = [[CPGraphicsContext currentContext] graphicsPort],
+        width = CGRectGetWidth(bounds),
+        height = CGRectGetHeight(bounds);
+
+        
+        CGContextStrokeLineSegments(context, [CGPointMake(10, 10),CGPointMake(200, 200)],2);
+        
+    }
 @end
 
 @implementation TaskboardNavigationArea : CPBox
