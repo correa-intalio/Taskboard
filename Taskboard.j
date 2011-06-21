@@ -83,14 +83,16 @@
 
 @implementation TaskboardColumn : CPBox
 {
-    CPString title @accessors;
+    CPString	title @accessors;
+	id			parent @accessors;
 }
-- (id)initWithFrame:(CGRect)aFrame title:(CPString)aTitle
+- (id)initWithFrame:(CGRect)aFrame title:(CPString)aTitle parent:(id)aParent
 {
     self = [super initWithFrame:CGRectInset(aFrame, 5.0, 5.0)];
     if (self)
     {
         title = aTitle;
+		parent = aParent;
         [self setBackgroundColor:[CPColor whiteColor]];
         [self setBorderType:CPNoBorder];
         
@@ -112,14 +114,16 @@
         // [titleView setBorderColor:[CPColor lightGrayColor]];
         // [self addSubview:titleView];
         // 
-        var titleTextField = [[CPTextField alloc] initWithFrame:CGRectMake(0,0,100,40)];
+        var titleTextField = [[TitleTextField alloc] initWithFrame:CGRectMake(0,0,100,40)];
         [titleTextField setStringValue:title];
         [titleTextField setEditable:NO];
         [titleTextField setFont:[CPFont boldSystemFontOfSize:14.0]];
         [titleTextField sizeToFit];
         [titleTextField setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
         [titleTextField setCenter:CGPointMake(width / 2, height / 2)];
-        [self addSubview:titleTextField];
+		[titleTextField setAction:@selector(tile)];
+        [titleTextField setTarget:[self parent]];
+		[self addSubview:titleTextField];
         
         // [titleTextField setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
         // [titleTextField setCenter:CGPointMake(width / 2, height / 2)];
@@ -127,6 +131,11 @@
 
     }
     return self;
+}
+
+- (void)onTitleClick
+{
+    console.log("onTitleClick");
 }
 
 - (void)drawRect:(CPRect)aRect
@@ -160,6 +169,20 @@
 }
 @end
 
+@implementation TitleTextField : CPTextField
+{
+	
+}
+- (void)mouseDown:(CPEvent)anEvent
+{
+    if ([anEvent clickCount] == 2)
+	{
+		console.log('doubleClick');
+		[self sendAction:[self action] to:[self target]];
+	}
+}
+@end
+
 @implementation Blackboard : CPBox
 {
     TaskboardColumn notStartedColumn @accessors;
@@ -183,11 +206,11 @@
             height = CGRectGetHeight([self bounds]);
         
         
-        notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,80) title:"NOT STARTED"];
+        notStartedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(0,0,width,80) title:"NOT STARTED" parent:self];
         [self addSubview:notStartedColumn];
-        inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,80) title:"IN PROGRESS"];
+        inProgressColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width,0,width,80) title:"IN PROGRESS" parent:self];
         [self addSubview:inProgressColumn];
-        finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,80) title:"FINISHED"];
+        finishedColumn = [[TaskboardColumn alloc] initWithFrame:CGRectMake(width + width,0,width,80) title:"FINISHED" parent:self];
         [self addSubview:finishedColumn];
         [self registerForDraggedTypes:[NewStickyNoteDragType]];
 
@@ -207,33 +230,49 @@
 
 - (void)reloadContent
 {
+	console.log('reloadContent');
 	var index = 0,
-		size = 150;
-	
-
-	var count = views.length;
-	while (count--)
-	{
-		[views[count] removeFromSuperview];
-	}
+		size = 150,
+		count = taskList.length;
 		
-	count = taskList.length;
-	var numberOfColumns = MAX(1.0, FLOOR(columnWidth / size));
-	var numberOfRows = MAX(1.0, FLOOR(columnHeight / size));
-	var gap = size;
-	if( count > ( numberOfColumns * numberOfRows))
-	{
-		gap = FLOOR(size / 3);
-	}
-	var horizontalMargin = FLOOR((columnWidth - numberOfColumns * size) / (numberOfColumns + 1));
-	var x = horizontalMargin,
-		y = -gap + originY; 
-	
 	for (; index < count; ++index)
 	{
 		var stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0,0,size,size) task:taskList[index]];
 		views.push(stickyNote);
 		[self addSubview:stickyNote];
+	}
+	[self tile];	
+}
+
+- (void)tile
+{
+	var index = 0,
+		size = 150;
+		count = views.length,
+		numberOfColumns = MAX(1.0, FLOOR(columnWidth / size)),
+		numberOfRows = MAX(1.0, FLOOR(columnHeight / size)),
+		gap = size,
+		horizontalMargin = FLOOR((columnWidth - numberOfColumns * size) / (numberOfColumns + 1));
+
+	for (; index < count; ++index)
+	{
+		var stickyNote = views[index];
+		[stickyNote removeFromSuperview];
+	}
+
+	index = 0;
+	//overlap tasks	
+	if( count > ( numberOfColumns * numberOfRows))
+	{
+		gap = FLOOR(size / 3);
+	}
+	
+	var x = horizontalMargin,
+		y = -gap + originY; 
+	
+	for (; index < count; ++index)
+	{
+		var stickyNote = views[index];
 		
 		if (index % numberOfColumns == 0)
 		{
@@ -241,10 +280,11 @@
 			y += verticalMargin + gap;
 		 }
 
+		[self addSubview:stickyNote];
 		[stickyNote setFrameOrigin:CGPointMake(x, y)];
 		
 		x += size + horizontalMargin;		
-	}	
+	}
 }
 
 - (void)setDraggingEnteredBorder
@@ -273,10 +313,13 @@
 {
 	var location = [self convertPoint:[aSender draggingLocation] fromView:nil];
 	[self setDraggingExitedBorder];
-   	var data = [[aSender draggingPasteboard] dataForType:NewStickyNoteDragType];
-   	var stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 150, 150) task:[Task taskWithTitle:"Task User"]];
-    [stickyNote setFrameOrigin:CGPointMake(location.x - CGRectGetWidth([stickyNote frame]) / 2.0, location.y - CGRectGetHeight([stickyNote frame]) / 2.0)];
-   	//views.push(stickyNote);
+   	var data = [[aSender draggingPasteboard] dataForType:NewStickyNoteDragType],
+		aTask = [Task taskWithTitle:"Task User"],
+		stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0, 0, 150, 150) task:aTask];
+   	
+	[stickyNote setFrameOrigin:CGPointMake(location.x - CGRectGetWidth([stickyNote frame]) / 2.0, location.y - CGRectGetHeight([stickyNote frame]) / 2.0)];
+   	views.push(stickyNote);
+	taskList.push(aTask);
 	[self addSubview:stickyNote];
    
 }
