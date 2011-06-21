@@ -171,6 +171,7 @@
 	float           verticalMargin;
 	float			originY;
 	float			columnWidth;
+	float			columnHeight;
 }
 - (id)initWithFrame:(CGRect)aFrame
 {
@@ -195,8 +196,9 @@
 		verticalMargin = 5.0;
 		originY = 80;
 		columnWidth = CGRectGetWidth([self bounds]) / 3;
+		columnHeight = CGRectGetHeight([self bounds]);
 		views = [];
-		//[self reloadContent];
+		[self reloadContent];
 
 
     }
@@ -205,7 +207,9 @@
 
 - (void)reloadContent
 {
-	var index = 0;
+	var index = 0,
+		size = 150;
+	
 
 	var count = views.length;
 	while (count--)
@@ -214,26 +218,32 @@
 	}
 		
 	count = taskList.length;
-	var numberOfColumns = MAX(1.0, FLOOR(columnWidth / 100));
-	var horizontalMargin = FLOOR((columnWidth - numberOfColumns * 100) / (numberOfColumns + 1));
+	var numberOfColumns = MAX(1.0, FLOOR(columnWidth / size));
+	var numberOfRows = MAX(1.0, FLOOR(columnHeight / size));
+	var gap = size;
+	if( count > ( numberOfColumns * numberOfRows))
+	{
+		gap = FLOOR(size / 3);
+	}
+	var horizontalMargin = FLOOR((columnWidth - numberOfColumns * size) / (numberOfColumns + 1));
 	var x = horizontalMargin,
-		y = -100 + originY; 
+		y = -gap + originY; 
 	
 	for (; index < count; ++index)
 	{
-		var stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0,0,100,100) task:taskList[index]];
+		var stickyNote = [[StickyNote alloc] initWithFrame:CGRectMake(0,0,size,size) task:taskList[index]];
 		views.push(stickyNote);
 		[self addSubview:stickyNote];
 		
 		if (index % numberOfColumns == 0)
 		{
 			x = horizontalMargin;
-			y += verticalMargin + 100;
+			y += verticalMargin + gap;
 		 }
 
 		[stickyNote setFrameOrigin:CGPointMake(x, y)];
 		
-		x += 100 + horizontalMargin;		
+		x += size + horizontalMargin;		
 	}	
 }
 
