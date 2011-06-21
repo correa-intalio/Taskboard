@@ -379,15 +379,15 @@ NewStickyNoteDragType = "NewStickyNoteDragType";
 {
     var bundle = [CPBundle bundleForClass:[self class]],
         backgroundImage = [CPColor colorWithPatternImage:[[CPNinePartImage alloc] initWithImageSlices:[
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top-left.png"] size:CPSizeMake(10.0, 30.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top.png"] size:CPSizeMake(1.0, 30.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"top-right.png"] size:CPSizeMake(10.0, 30.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"left.png"] size:CPSizeMake(10.0, 1.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"center.png"] size:CPSizeMake(1.0, 1.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"right.png"] size:CPSizeMake(10.0, 1.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom-left.png"] size:CPSizeMake(10.0, 12.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom.png"] size:CPSizeMake(1.0, 12.0)],
-            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"bottom-right.png"] size:CPSizeMake(10.0, 12.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"yellow/top-left.png"] size:CPSizeMake(10.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"yellow/top.png"] size:CPSizeMake(1.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"yellow/top-right.png"] size:CPSizeMake(10.0, 30.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"yellow/left.png"] size:CPSizeMake(10.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"yellow/center.png"] size:CPSizeMake(1.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"yellow/right.png"] size:CPSizeMake(10.0, 1.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"yellow/bottom-left.png"] size:CPSizeMake(10.0, 12.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"yellow/bottom.png"] size:CPSizeMake(1.0, 12.0)],
+            [[CPImage alloc] initWithContentsOfFile:[bundle pathForResource:@"yellow/bottom-right.png"] size:CPSizeMake(10.0, 12.0)],
         ]]];
     
     return backgroundImage;
