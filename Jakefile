@@ -17,6 +17,7 @@ var ENV = require("system").env,
 
 app ("Taskboard", function(task)
 {
+    print("Taskboard");
     task.setBuildIntermediatesPath(FILE.join("Build", "Taskboard.build", configuration));
     task.setBuildPath(FILE.join("Build", configuration));
 
@@ -39,6 +40,7 @@ app ("Taskboard", function(task)
 
 task ("default", ["Taskboard"], function()
 {
+    print("default");
     printResults(configuration);
 });
 
@@ -46,6 +48,7 @@ task ("build", ["default"]);
 
 task ("debug", function()
 {
+    print("debug");
     ENV["CONFIGURATION"] = "Debug";
     JAKE.subjake(["."], "build", ENV);
 });
